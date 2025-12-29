@@ -25,3 +25,7 @@ Inheritance simplified the design by allowing common vehicle logic to be placed 
 Method overriding allowed each vehicle type to have its own engine behavior.
 
 The main challenge was using protected fields correctly and passing objects through constructors.
+## UML Diagram
+The UML diagram illustrates the abstract Vehicle superclass, its subclasses,
+and the multi-level inheritance with ElectricCar.
+It also shows the composition relationship between Vehicle and Driver.
