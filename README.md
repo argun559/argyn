@@ -1,143 +1,114 @@
-# Car Rental Management System (JDBC, PostgreSQL)
+Endterm Project – Spring Boot REST API
+Project Overview
 
-## Project Description
-This project is a **Car Rental Management System** implemented in **Java** using **JDBC** and **PostgreSQL**.  
-The system follows a **layered architecture** and demonstrates proper usage of **OOP principles**, **SOLID**, **interfaces**, **generics**, **exception handling**, and **database integration**.
+This project was developed as an endterm assignment for the course.
+It represents a REST API application built with Spring Boot and follows a layered architecture.
 
-The application allows managing vehicles and engines, validating business rules, and preventing invalid or duplicate data from being stored in the database.
+The main purpose of the project is to demonstrate practical skills in building RESTful services, applying design patterns, and organizing a backend application using Spring Boot.
 
----
+Technologies Used
 
-## Architecture Overview
+Java 25
 
-The project is structured using a clean layered architecture:
+Spring Boot
 
-- **Controller layer** – handles application flow
-- **Service layer** – contains business logic and validation
-- **Repository layer** – performs database operations using JDBC
-- **Model layer** – represents domain entities
-- **Exception layer** – custom runtime exceptions
-- **Utility layer** – helper classes (reflection, sorting, DB connection)
+Spring Web (REST API)
 
-This separation ensures **maintainability, scalability, and testability**.
+Spring Data JPA
 
----
+H2 In-Memory Database
 
-## Technologies Used
+Maven
 
-- Java (JDK 17+)
-- PostgreSQL
-- JDBC
-- IntelliJ IDEA
-- pgAdmin
+IntelliJ IDEA
 
----
+Project Structure
 
-## Project Structure
+The project follows the recommended repository structure provided in the assignment:
 
-src
-├── controller
-├── service
-│ └── interfaces
-├── repository
-│ └── interfaces
-├── model
-├── exception
-├── db
-├── utils
+src/main/java/
+ ├── controller     // REST controllers
+ ├── service        // Business logic layer
+ ├── repository     // Data access layer (JPA)
+ ├── model          // Entity classes
+ ├── dto            // Data Transfer Objects
+ ├── exception      // Custom exceptions
+ ├── patterns       // Design patterns implementation
+ ├── utils          // Utility classes
+ └── Application.java
 
----
+src/main/resources/
+ └── application.properties
 
-## Database Design
 
-The system uses a PostgreSQL database with the following tables:
+This structure ensures separation of concerns and improves readability and maintainability of the code.
 
-### engine
-- `id` (INT, PRIMARY KEY)
-- `engine_type` (VARCHAR)
-- `horse_power` (INT)
+REST API
 
-### vehicle
-- `id` (INT, PRIMARY KEY)
-- `name` (VARCHAR)
-- `brand` (VARCHAR)
-- `available` (BOOLEAN)
-- `vehicle_type` (VARCHAR)
-- `seats` (INT)
-- `load_capacity_kg` (INT)
-- `has_ac` (BOOLEAN)
-- `engine_id` (INT, FOREIGN KEY → engine.id)
+The application exposes REST endpoints using Spring MVC annotations.
 
-The database schema ensures **referential integrity** using foreign keys.
+Example Endpoint
+GET /api/media
 
----
 
-## Repository Layer (JDBC)
+This endpoint returns a list of media content in JSON format.
+If no records exist in the database, an empty list is returned.
 
-The repository layer uses **pure JDBC** with:
-- `Connection`
-- `PreparedStatement`
-- `ResultSet`
+Design Patterns
 
-A generic interface `CrudRepository<T>` is implemented to support:
-- `create`
-- `findById`
-- `findAll`
-- `update`
-- `delete`
+The following design patterns were implemented in the project:
 
-This demonstrates **generic programming** and **interface-based design**.
+Builder Pattern
+Used for constructing complex objects such as orders in a step-by-step manner.
 
----
+Factory Pattern
+Used to create different types of media content based on input parameters.
 
-## Service Layer & Validation
+Singleton Pattern
+Used in cases where a single shared instance is required across the application.
 
-The service layer:
-- validates entities before saving
-- checks for duplicate records
-- throws meaningful custom exceptions
+These patterns help improve flexibility, readability, and maintainability of the code.
 
-Example:
-- Attempting to add an engine with an existing ID results in `DuplicateResourceException`.
+Database Configuration
 
-This ensures **business rules are enforced at the service level**, not in controllers or repositories.
+The project uses an H2 in-memory database for development and demonstration purposes.
+All database configuration settings are located in:
 
----
+src/main/resources/application.properties
 
-## Exception Handling
 
-The project includes custom runtime exceptions, such as:
-- `DuplicateResourceException`
-- `DatabaseOperationException`
-- `ValidationException`
+This allows the application to run without the need for an external database.
 
-These exceptions improve readability, debugging, and robustness of the system.
+How to Run the Application
 
----
+Open the project in IntelliJ IDEA
 
-## How to Run the Project
+Make sure all Maven dependencies are downloaded
 
-1. Create a PostgreSQL database named `Cardb`
-2. Execute the provided SQL schema to create tables
-3. Update database credentials in `DatabaseConnection`
-4. Run the `Main` class
+Run the Application.java class
 
-The application will validate entities and perform database operations.
+Open a browser and navigate to:
 
----
+http://localhost:8080/api/media
 
-## Key Features Demonstrated
+Screenshots
 
-- SOLID principles
-- Layered architecture
-- Interfaces and generics
-- JDBC with PostgreSQL
-- Custom exception handling
-- Data validation
-- Prevention of duplicate records
+The docs/ folder contains screenshots that demonstrate:
 
----
+Project structure in IntelliJ IDEA
 
+Successful application startup
+
+REST API response in the browser
+
+UML or architecture diagram
+
+These screenshots confirm correct project setup and functionality.
+
+Conclusion
+
+This project demonstrates the use of Spring Boot for building RESTful web services, proper layering of application components, and implementation of common design patterns.
+All functional and structural requirements of the assignment have been fulfilled.
 ## Conclusion
 
 This project demonstrates a complete backend system using **Java, JDBC, and PostgreSQL**, following best practices in **object-oriented design** and **software architecture**.
