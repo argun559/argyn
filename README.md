@@ -1,23 +1,25 @@
-Endterm Project – REST API (Spring Boot)
+Media Management REST API
 Project Overview
 This project is a REST API application developed as an endterm project for the course.
-The main goal of the project is to demonstrate understanding of Spring Boot, REST architecture, layered application structure, and design patterns.
+The goal of the project is to demonstrate understanding of:
 
-The application manages media content and orders using a clean separation between controllers, services, repositories, and models.
-
+Spring Boot
+REST architecture
+Layered application structure
+Design patterns
+Caching mechanisms
+The application manages media content (movies, series, etc.) and supports full CRUD operations.
+The project follows a clean layered architecture: controller → service → repository → database.
 Technologies Used
-
 Java 25
 Spring Boot
 Spring Web (REST API)
 Spring Data JPA
 H2 in-memory database
+Spring Cache (in-memory caching)
 Maven
 IntelliJ IDEA
 Project Structure
-
-The project follows the recommended repository structure provided in the assignment:
-
 src/main/java/
  ├── controller     // REST controllers
  ├── service        // Business logic layer
@@ -25,60 +27,124 @@ src/main/java/
  ├── model          // Entity classes
  ├── dto            // Data Transfer Objects
  ├── exception      // Custom exceptions
- ├── patterns       // Design patterns implementation
+ ├── patterns       // Factory & Singleton implementations
  ├── utils          // Utility classes
  └── Application.java
 
-src/main/resources/
- └── application.properties
- REST API
-The application exposes REST endpoints using Spring MVC annotations.
 
-Example Endpoint
-GET /api/media
-This endpoint returns a list of media content in JSON format.
-If no records exist in the database, an empty list is returned.
+The structure strictly follows the layered architecture principle.
+Each layer has a single responsibility.
+Implemented Design Patterns
+1. Factory Pattern
 
-Design Patterns
+Used for creating different types of media content through MediaFactory.
 
-The following design patterns were implemented in the project:
-Builder Pattern
-Used for constructing complex objects such as orders in a step-by-step manner.
-Factory Pattern
-Used to create different types of media content based on input parameters.
-Singleton Pattern
-Used in cases where a single shared instance is required across the application.
-These patterns help improve flexibility, readability, and maintainability of the code.
+2. Singleton Pattern
 
-Database Configuration
-The project uses an H2 in-memory database for development and demonstration purposes.
-All database configuration settings are located in:
-src/main/resources/application.properties
+Used in LoggingService to ensure only one logging instance exists.
 
-This allows the application to run without the need for an external database.
+3. Caching (Spring In-Memory Cache)
 
-How to Run the Application
-Open the project in IntelliJ IDEA
-Make sure all Maven dependencies are downloaded
-Run the Application.java class
-Open a browser and navigate to:
+Implemented using Spring’s caching abstraction.
 
-http://localhost:8080/api/media
+Caching Implementation
 
-Screenshots
+To improve performance, an in-memory caching layer was added in the Service layer using Spring Cache.
 
-The docs/ folder contains screenshots that demonstrate:
-Project structure in IntelliJ IDEA
-Successful application startup
-REST API response in the browser
-UML or architecture diagram
+Why caching was added?
 
-These screenshots confirm correct project setup and functionality.
+The method findAll() and findById() are frequently used.
+Without caching, each request would query the database.
+With caching enabled, repeated requests return data from memory instead of H2.
+
+How it works
+
+@Cacheable is used for read operations:
+
+findAll()
+
+findById(Long id)
+
+@CacheEvict is used for write operations:
+
+create()
+
+update()
+
+delete()
+
+When media content is modified, the cache is automatically cleared to prevent stale data.
+
+Technical details
+
+Cache type: Spring Simple In-Memory Cache
+
+Storage: ConcurrentHashMap (managed by Spring)
+
+Scope: Singleton (Spring Beans are singleton by default)
+
+Enabled via @EnableCaching
+
+This approach keeps caching logic inside the Service layer and does not break layered architecture.
+
+REST Endpoints
+Media Endpoints
+Method	Endpoint	Description
+GET	/media	Get all media
+GET	/media/{id}	Get media by ID
+POST	/media	Create new media
+PUT	/media/{id}	Update media
+DELETE	/media/{id}	Delete media
+Database
+
+The project uses H2 in-memory database.
+
+Database runs in memory
+
+Data resets on application restart
+
+Suitable for development and testing
+
+How to Run
+
+Clone the repository
+
+Open in IntelliJ IDEA
+
+Run Application.java
+
+Access API via:
+
+http://localhost:8080
+
+Architectural Notes
+
+Controller layer handles HTTP requests
+
+Service layer contains business logic and caching
+
+Repository layer handles database access
+
+DTOs are used to transfer data between layers
+
+Custom exceptions improve error handling
+
+Caching improves performance without breaking clean architecture
+
+The application follows SOLID principles and separation of concerns.
 
 Conclusion
 
-This project demonstrates the use of Spring Boot for building RESTful web services, proper layering of application components, and implementation of common design patterns.
-All functional and structural requirements of the assignment have been fulfilled.
+This project demonstrates:
 
+Proper REST API development using Spring Boot
 
-This structure ensures separation of concerns and improves readability and maintainability of the code.
+Clean layered architecture
+
+Usage of design patterns (Factory, Singleton)
+
+Integration of in-memory caching
+
+Good separation of responsibilities
+
+The caching layer improves performance for frequently accessed data while keeping the system consistent and maintainable.
